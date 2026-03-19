@@ -12,9 +12,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, Lock } from "lucide-react";
 
 const resetPasswordSchema = z
   .object({
@@ -53,7 +58,6 @@ export function ResetPasswordPage() {
   const onSubmit = async (data: ResetPasswordFormData) => {
     try {
       await resetPassword.mutateAsync({ newPassword: data.newPassword });
-      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +89,7 @@ export function ResetPasswordPage() {
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-sm">
-        <CardHeader className="space-y-1">
+        <CardHeader className="gap-0 space-y-1">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
@@ -100,79 +104,104 @@ export function ResetPasswordPage() {
           <CardDescription>Enter your new password below</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="password">New password</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  {...register("newPassword")}
-                  disabled={isSubmitting || resetPassword.isPending}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-1/2 right-1 h-7 w-7 -translate-y-1/2"
-                  onClick={() => setShowPassword(!showPassword)}
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <FieldGroup className="gap-0 space-y-3">
+              {/* New Password Field */}
+              <Field orientation="vertical" className="gap-0 space-y-1">
+                <FieldLabel
+                  htmlFor="newPassword"
+                  className={`flex items-center gap-2 text-sm font-medium ${
+                    errors.newPassword ? "text-red-500" : "text-foreground"
+                  }`}
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-              {errors.newPassword && (
-                <p className="text-xs text-red-500">
-                  {errors.newPassword.message}
-                </p>
-              )}
-            </div>
+                  <Lock
+                    className={`h-4 w-4 ${
+                      errors.newPassword
+                        ? "text-red-500"
+                        : "text-muted-foreground"
+                    }`}
+                  />
+                  New Password
+                </FieldLabel>
+                <div className="relative">
+                  <Input
+                    id="newPassword"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className="pr-10"
+                    {...register("newPassword")}
+                    aria-invalid={!!errors.newPassword}
+                    disabled={isSubmitting || resetPassword.isPending}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-1/2 right-1 h-7 w-7 -translate-y-1/2"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                {errors.newPassword && (
+                  <FieldError className="flex items-center gap-1 text-xs text-red-500">
+                    {errors.newPassword.message}
+                  </FieldError>
+                )}
+              </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm password</Label>
-              <div className="relative">
-                <Input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  {...register("confirmPassword")}
-                  disabled={isSubmitting || resetPassword.isPending}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-1/2 right-1 h-7 w-7 -translate-y-1/2"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              {/* Confirm Password Field */}
+              <Field orientation="vertical" className="gap-0 space-y-1">
+                <FieldLabel
+                  htmlFor="confirmPassword"
+                  className={`flex items-center gap-2 text-sm font-medium ${
+                    errors.confirmPassword ? "text-red-500" : "text-foreground"
+                  }`}
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="text-xs text-red-500">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
-            </div>
+                  <Lock
+                    className={`h-4 w-4 ${
+                      errors.confirmPassword
+                        ? "text-red-500"
+                        : "text-muted-foreground"
+                    }`}
+                  />
+                  Confirm Password
+                </FieldLabel>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className="pr-10"
+                    {...register("confirmPassword")}
+                    aria-invalid={!!errors.confirmPassword}
+                    disabled={isSubmitting || resetPassword.isPending}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-1/2 right-1 h-7 w-7 -translate-y-1/2"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                {errors.confirmPassword && (
+                  <FieldError className="flex items-center gap-1 text-xs text-red-500">
+                    {errors.confirmPassword.message}
+                  </FieldError>
+                )}
+              </Field>
 
-            {resetPassword.isSuccess ? (
-              <div className="rounded-lg bg-green-50 p-3 text-center">
-                <p className="text-sm text-green-700">
-                  Password reset successful!
-                </p>
-                <p className="mt-1 text-xs text-green-600">
-                  Redirecting to login...
-                </p>
-              </div>
-            ) : (
               <Button
                 type="submit"
                 className="w-full"
@@ -184,7 +213,7 @@ export function ResetPasswordPage() {
                   "Reset password"
                 )}
               </Button>
-            )}
+            </FieldGroup>
           </form>
         </CardContent>
       </Card>

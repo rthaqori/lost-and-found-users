@@ -103,6 +103,7 @@ export const useChangePassword = () => {
       toast.success(data.message || "Password changed successfully");
       // Optionally refresh user data
       queryClient.invalidateQueries({ queryKey: authKeys.user() });
+      // setTimeout(() => navigate("/profile"), 2000);
     },
     onError: (error: any) => {
       toast.error(error?.message || "Failed to change password");

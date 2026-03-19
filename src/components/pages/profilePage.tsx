@@ -34,6 +34,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
+import { ChangePasswordDialog } from "../dialogs/changePasswordDialog";
 
 export function ProfilePage() {
   const { user, isLoading, logout } = useAuth();
@@ -148,6 +149,7 @@ export function ProfilePage() {
                   <Edit className="mr-2 h-4 w-4" />
                   Edit
                 </Button>
+                <ChangePasswordDialog />
                 <Button variant="destructive" size="sm" onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Logout
