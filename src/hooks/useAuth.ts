@@ -29,7 +29,7 @@ export const useRegister = () => {
       toast.success(
         data.message || "Registration successful! Please verify your email.",
       );
-      navigate("/verify-email-prompt");
+      navigate("/login");
     },
     onError: (error: any) => {
       toast.error(error?.message || "Registration failed");

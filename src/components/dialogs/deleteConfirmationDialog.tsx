@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
 interface DeleteConfirmation {
+  buttonText?: string;
   title: string;
   description: string;
   isPending?: boolean;
@@ -20,6 +21,7 @@ interface DeleteConfirmation {
 }
 
 export function DeleteConfirmation({
+  buttonText = "Delete",
   title,
   description,
   isPending,
@@ -34,7 +36,7 @@ export function DeleteConfirmation({
           size="sm"
         >
           <Trash className="mr-2 h-4 w-4" />
-          Delete
+          {buttonText}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

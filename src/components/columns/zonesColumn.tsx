@@ -84,7 +84,7 @@ export const zoneColumns = ({
       );
     },
     cell: ({ row }) => (
-      <Link to={`/zones/${row.original._id}`}>
+      <Link to={`/admin/zones/${row.original._id}`}>
         <div className="font-medium">{row.getValue("name")}</div>
         {row.original.building && (
           <div className="text-muted-foreground mt-0.5 flex items-center gap-1 text-xs">

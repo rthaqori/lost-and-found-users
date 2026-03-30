@@ -24,12 +24,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -70,13 +68,12 @@ import {
   Shield,
   AlertTriangle,
   CheckCircle,
-  ExternalLink,
   Copy,
   Link2,
   Trash2,
   Edit,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { formatDistanceToNow, format } from "date-fns";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -344,6 +341,9 @@ export default function LostItemDetails() {
   const [showAllComments, setShowAllComments] = useState(false);
 
   const { data, isLoading } = useLostItem(id || "", user?.college?.id || "");
+
+  console.log("Item Data:", data);
+
   const likeItem = useLikeItem();
   const unlikeItem = useUnlikeItem();
   const shareItem = useShareItem();
@@ -533,11 +533,18 @@ export default function LostItemDetails() {
                 <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
                   <div className="flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
-                    <span>{formatDate(item.createdAt)}</span>
+                    <span className="text-nowrap">
+                      {formatDate(item.createdAt)}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1">
                     <MapPin className="h-3 w-3" />
-                    <span>{item.locationDescription}</span>
+                    <span className="text-nowrap">{item.zoneId?.name}</span>(
+                    <span className="line-clamp-1">
+                      {item.locationDescription}
+                      rerum!
+                    </span>
+                    )
                   </div>
                 </div>
               </div>
@@ -553,7 +560,7 @@ export default function LostItemDetails() {
                 {(isOwner || isAdmin) && (
                   <>
                     <DropdownMenuItem
-                      onClick={() => navigate(`/edit-post/${item._id}`)}
+                      onClick={() => navigate(`/post/${item._id}/edit`)}
                     >
                       <Edit className="mr-2 h-4 w-4" />
                       Edit

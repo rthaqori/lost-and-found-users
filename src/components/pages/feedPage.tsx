@@ -92,6 +92,7 @@ import type {
   FlagReason as CommentFlagReason,
 } from "@/types/comment.types";
 import { Link } from "react-router-dom";
+import { useStartConversation } from "@/hooks/useStartConversation";
 
 // HELPER FUNCTIONS
 
@@ -744,6 +745,8 @@ const Post: React.FC<PostProps> = ({
   const flagItem = useFlagItem();
   const deleteItem = useDeleteItem();
 
+  const { startConversation, loading: isClaiming } = useStartConversation();
+
   const isOwner = item.reportedBy._id === currentUserId;
   const descriptionLength = item.description?.length || 0;
   const needsTruncate = descriptionLength > 150;
@@ -794,6 +797,22 @@ const Post: React.FC<PostProps> = ({
     "other",
   ];
 
+  const handleClaimItem = async () => {
+    const postUrl = `${window.location.origin}/post/${item._id}`;
+    await startConversation(
+      item.reportedBy,
+      `Hi! I'd like to claim this item — I believe it belongs to me.\n\n📦 ${item.itemName}\n📍 ${item.locationDescription}\n\n${postUrl}`,
+      {
+        postId: item._id,
+        postUrl,
+        postTitle: item.itemName,
+        postImage: item.images?.[0]?.url ?? null,
+        postLocation: item.locationDescription,
+        postStatus: item.status,
+      },
+    );
+  };
+
   return (
     <div className="mb-5 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
       {/* Post Header */}
@@ -836,13 +855,18 @@ const Post: React.FC<PostProps> = ({
               </div>
               <div className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
                 <div className="flex items-center gap-1">
-                  <MapPin className="h-3 w-3" />
-                  <span>{item.locationDescription}</span>
+                  <Clock className="h-3 w-3" />
+                  <span>{formatDate(item.createdAt)}</span>
                 </div>
                 <span>•</span>
                 <div className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  <span>{formatDate(item.createdAt)}</span>
+                  <MapPin className="h-3 w-3" />
+                  <span className="text-nowrap">{item.zoneId?.name}</span>(
+                  <span className="line-clamp-1">
+                    {item.locationDescription}
+                    rerum!
+                  </span>
+                  )
                 </div>
               </div>
             </div>
@@ -870,6 +894,16 @@ const Post: React.FC<PostProps> = ({
                   Report
                 </DropdownMenuItem>
               )}
+              {!isOwner && item.status === "lost" && (
+                <DropdownMenuItem
+                  onClick={handleClaimItem}
+                  disabled={isClaiming}
+                  className="text-blue-600"
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  {isClaiming ? "Opening chat..." : "Claim item"}
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem onClick={copyLink}>
                 <Copy className="mr-2 h-4 w-4" />
                 Copy Link
@@ -879,7 +913,7 @@ const Post: React.FC<PostProps> = ({
         </div>
 
         <div className="mt-3">
-          <Link to={`/${item._id}`} className="mt-3">
+          <Link to={`/post/${item._id}`} className="mt-3">
             <h2 className="text-xl font-semibold text-gray-900">
               {item.itemName}
             </h2>
@@ -1424,6 +1458,9 @@ export const Feed = () => {
     search: debouncedSearch || undefined,
     sortBy: "createdAt",
     sortOrder: "desc",
+
+    isVerified: true, // Only show verified posts in the feed
+    isActive: true, // Only show active posts
   });
 
   // Infinite scroll - load more when scrolling

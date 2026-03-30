@@ -265,35 +265,6 @@ export const lostItemApis = {
     return handleResponse<InteractionsResponse>(response);
   },
 
-  //  UPDATE
-
-  // Update lost item
-  // updateLostItem: async (
-  //   id: string,
-  //   data: UpdateLostItemRequest,
-  //   images?: File[],
-  // ): Promise<LostItemResponse> => {
-  //   const formData = new FormData();
-
-  //   // Append images if provided
-  //   if (images && images.length > 0) {
-  //     images.forEach((image) => {
-  //       formData.append("images", image);
-  //     });
-  //   }
-
-  //   // Append update data as JSON
-  //   formData.append("data", JSON.stringify(data));
-
-  //   const response = await fetch(`${API_BASE_URL}/lost-items/${id}`, {
-  //     method: "PUT",
-  //     credentials: "include",
-  //     body: formData,
-  //   });
-
-  //   return handleResponse<LostItemResponse>(response);
-  // },
-
   // Update lost item - FIXED
   updateLostItem: async (
     id: string,

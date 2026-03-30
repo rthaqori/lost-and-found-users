@@ -50,7 +50,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { ZONE_TYPE_OPTIONS } from "@/types/zone.types";
-import { ZoneFormDialog } from "../dialogs/zoneFormDialog";
+import { ZoneFormDialog } from "../../dialogs/zoneFormDialog";
 
 export default function ZoneDetails() {
   const { id } = useParams<{ id: string }>();

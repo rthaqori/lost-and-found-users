@@ -7,11 +7,17 @@ import { Spinner } from "./components/ui/spinner";
 import { ProfilePage } from "./components/pages/profilePage";
 import { ResetPasswordPage } from "./components/pages/resetPasswordPage";
 import Feed from "./components/pages/feedPage";
-import ZonesPage from "./components/pages/zonesPage";
-import ZoneDetails from "./components/pages/zoneDetailsPage";
+import ZonesPage from "./components/pages/admin/zonesPage";
+import ZoneDetails from "./components/pages/admin/zoneDetailsPage";
 import EditLostItemPost from "./components/pages/editLostItemPost";
 import CreateLostItemPost from "./components/pages/createLostItemPost";
 import LostItemDetails from "./components/pages/lostItemDetailsPage";
+import ChatPage from "./components/pages/chatPage";
+import DashboardLayout from "./components/layouts/dashboardLayout";
+import DashboardPage from "./components/pages/admin/dashboardPage";
+import StudentsPage from "./components/pages/admin/studentsPage";
+import { AdminLostItemDetail } from "./components/pages/admin/AdminLostItemDetail";
+import LostItemsPage from "./components/pages/admin/LostItemsPage";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -53,7 +59,54 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Feed />} />
+      <Route element={<DashboardLayout />}>
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/students"
+          element={
+            <ProtectedRoute>
+              <StudentsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/zones"
+          element={
+            <ProtectedRoute>
+              <ZonesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/zones/:id"
+          element={
+            <ProtectedRoute>
+              <ZoneDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/admin/lost-items" element={<LostItemsPage />} />
+        <Route path="/admin/lost-items/:id" element={<AdminLostItemDetail />} />
+      </Route>
+
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Feed />
+          </ProtectedRoute>
+        }
+      />
 
       <Route
         path="/login"
@@ -100,13 +153,12 @@ const App = () => {
         }
       />
 
-      <Route path="/zones" element={<ZonesPage />} />
-      <Route path="/zones/:id" element={<ZoneDetails />} />
-
       <Route path="/create-post" element={<CreateLostItemPost />} />
-      <Route path="/:id/edit-post" element={<EditLostItemPost />} />
+      <Route path="/post/:id/edit" element={<EditLostItemPost />} />
 
-      <Route path="/:id" element={<LostItemDetails />} />
+      <Route path="/post/:id" element={<LostItemDetails />} />
+
+      <Route path="/chat" element={<ChatPage />} />
     </Routes>
   );
 };

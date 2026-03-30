@@ -17,9 +17,9 @@ import {
   type Zone,
   type ZoneType,
 } from "@/types/zone.types";
-import { zoneColumns } from "../columns/zonesColumn";
-import { ZoneFormDialog } from "../dialogs/zoneFormDialog";
-import { DataTable } from "../dataTables/dataTable";
+import { zoneColumns } from "../../columns/zonesColumn";
+import { ZoneFormDialog } from "../../dialogs/zoneFormDialog";
+import { DataTable } from "../../dataTables/dataTable";
 import { useDebounce } from "@/utils/debounce";
 
 export default function ZonesPage() {

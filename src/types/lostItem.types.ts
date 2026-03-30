@@ -70,6 +70,10 @@ export interface GetLostItemsQuery {
   latitude?: number;
   longitude?: number;
   maxDistance?: number;
+
+  isActive?: boolean;
+  isVerified?: boolean;
+  includeStats?: boolean;
 }
 
 export interface SearchItemsQuery {
@@ -151,6 +155,11 @@ export interface ZoneReference {
   _id: string;
   name: string;
   type: string;
+  location?: {
+    address: string;
+    coordinates: [number, number];
+    type: string;
+  };
 }
 
 export interface UserReference {
