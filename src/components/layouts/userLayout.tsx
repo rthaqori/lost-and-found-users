@@ -12,14 +12,12 @@ const UserLayout = () => {
     "/create-found-item",
     "/messages",
     "/profile/edit",
+    "/my-items",
   ];
 
   // Or use pattern matching for dynamic routes
   const shouldHideHeader =
-    hideHeaderRoutes.includes(location.pathname) ||
-    location.pathname === "/" ||
-    location.pathname.startsWith("/chat/") ||
-    location.pathname.startsWith("/post/");
+    hideHeaderRoutes.includes(location.pathname) || location.pathname === "/";
 
   return (
     <SidebarProvider>

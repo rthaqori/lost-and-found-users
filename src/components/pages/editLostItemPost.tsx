@@ -37,7 +37,7 @@ const EditLostItemPost = () => {
     );
   }
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto pt-6">
       <LostItemForm initialData={itemData?.data} />
     </div>
   );

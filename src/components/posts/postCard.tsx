@@ -24,6 +24,7 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  Edit,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -229,6 +230,18 @@ export const Post: React.FC<PostProps> = ({
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete
+                </DropdownMenuItem>
+              )}
+
+              {(isOwner || isAdmin) && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    window.location.href = `/edit-post/${item._id}`;
+                  }}
+                  className="text-blue-600"
+                >
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit Post
                 </DropdownMenuItem>
               )}
               {!isOwner && (

@@ -24,6 +24,7 @@ import MyDisputesPage from "./components/pages/MyDisputesPage";
 import UserDisputeDetailsPage from "./components/pages/UserDisputeDetailsPage";
 import UserLayout from "./components/layouts/userLayout";
 import NotificationsPage from "./components/pages/NotificationsPage";
+import MyItemsPage from "./components/pages/MyItemsPage";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -140,42 +141,6 @@ const App = () => {
         />
 
         <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <LoginPage />
-            </PublicRoute>
-          }
-        />
-
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <RegisterPage />
-            </PublicRoute>
-          }
-        />
-
-        <Route
-          path="/verify-email/:token"
-          element={
-            <PublicRoute>
-              <VerifyEmailPage />
-            </PublicRoute>
-          }
-        />
-
-        <Route
-          path="/reset-password/:token"
-          element={
-            <PublicRoute>
-              <ResetPasswordPage />
-            </PublicRoute>
-          }
-        />
-
-        <Route
           path="/profile"
           element={
             <ProtectedRoute>
@@ -193,7 +158,7 @@ const App = () => {
           }
         />
         <Route
-          path="/post/:id/edit"
+          path="/edit-post/:id"
           element={
             <ProtectedRoute>
               <EditLostItemPost />
@@ -238,7 +203,51 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/my-items"
+          element={
+            <ProtectedRoute>
+              <MyItemsPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
+
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <RegisterPage />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/verify-email/:token"
+        element={
+          <PublicRoute>
+            <VerifyEmailPage />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/reset-password/:token"
+        element={
+          <PublicRoute>
+            <ResetPasswordPage />
+          </PublicRoute>
+        }
+      />
     </Routes>
   );
 };

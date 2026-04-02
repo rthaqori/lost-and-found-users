@@ -35,6 +35,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
+import { useNotifications } from "@/contexts/NotificationContext";
 
 const mainNavigation = [
   {
@@ -95,6 +96,8 @@ export default function UserSidebar() {
   const location = useLocation();
   const currentPath = location.pathname;
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+
+  const { unreadCount } = useNotifications();
 
   const isActive = (path: string) => {
     if (path === "/") {
@@ -193,16 +196,26 @@ export default function UserSidebar() {
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
                   )}
                 >
-                  <Link to={item.path}>
-                    <item.icon
-                      className={cn(
-                        "h-4 w-4",
-                        isActive(item.path) && "text-blue-600",
-                      )}
-                    />
-                    <span className="group-data-[collapsible=icon]:hidden">
-                      {item.title}
-                    </span>
+                  <Link
+                    to={item.path}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <item.icon
+                        className={cn(
+                          "h-4 w-4",
+                          isActive(item.path) && "text-blue-600",
+                        )}
+                      />
+                      <span className="group-data-[collapsible=icon]:hidden">
+                        {item.title}
+                      </span>
+                    </div>
+                    {unreadCount > 0 && item.title === "Notifications" && (
+                      <div className="flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-white">
+                        {unreadCount}
+                      </div>
+                    )}
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
