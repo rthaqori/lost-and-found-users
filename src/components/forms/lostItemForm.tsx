@@ -90,7 +90,6 @@ export function LostItemForm({ initialData }: LostItemFormProps) {
     reset,
     watch,
     clearErrors,
-    getValues,
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
@@ -377,7 +376,7 @@ export function LostItemForm({ initialData }: LostItemFormProps) {
     isSubmitting || createMutation.isPending || updateMutation.isPending;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 pb-6 md:px-6 lg:px-8">
+    <div className="mx-auto max-w-4xl px-4 md:px-6 lg:px-8">
       <form
         ref={formRef}
         onSubmit={handleSubmit(handleFormSubmit)}

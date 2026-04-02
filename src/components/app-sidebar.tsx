@@ -20,6 +20,7 @@ import {
   Shield,
   User,
   Building,
+  BanIcon,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
@@ -50,6 +51,11 @@ const managementItems = [
     title: "Posts",
     path: "/admin/lost-items",
     icon: FileText,
+  },
+  {
+    title: "Disputes",
+    path: "/admin/disputes",
+    icon: BanIcon,
   },
 ];
 

@@ -17,7 +17,13 @@ import DashboardLayout from "./components/layouts/dashboardLayout";
 import DashboardPage from "./components/pages/admin/dashboardPage";
 import StudentsPage from "./components/pages/admin/studentsPage";
 import { AdminLostItemDetail } from "./components/pages/admin/AdminLostItemDetail";
-import LostItemsPage from "./components/pages/admin/LostItemsPage";
+import LostItemsPage from "./components/pages/admin/lostItemsPage";
+import DisputesPage from "./components/pages/admin/DisputesPage";
+import DisputeDetailsPage from "./components/pages/DisputeDetails";
+import MyDisputesPage from "./components/pages/MyDisputesPage";
+import UserDisputeDetailsPage from "./components/pages/UserDisputeDetailsPage";
+import UserLayout from "./components/layouts/userLayout";
+import NotificationsPage from "./components/pages/NotificationsPage";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -95,70 +101,144 @@ const App = () => {
           }
         />
 
-        <Route path="/admin/lost-items" element={<LostItemsPage />} />
+        <Route
+          path="/admin/lost-items"
+          element={
+            <ProtectedRoute>
+              <LostItemsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/admin/lost-items/:id" element={<AdminLostItemDetail />} />
+
+        <Route
+          path="/admin/disputes"
+          element={
+            <ProtectedRoute>
+              <DisputesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/disputes/:id"
+          element={
+            <ProtectedRoute>
+              <DisputeDetailsPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Feed />
-          </ProtectedRoute>
-        }
-      />
+      <Route element={<UserLayout />}>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Feed />
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <LoginPage />
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
 
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <RegisterPage />
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <RegisterPage />
+            </PublicRoute>
+          }
+        />
 
-      <Route
-        path="/verify-email/:token"
-        element={
-          <PublicRoute>
-            <VerifyEmailPage />
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/verify-email/:token"
+          element={
+            <PublicRoute>
+              <VerifyEmailPage />
+            </PublicRoute>
+          }
+        />
 
-      <Route
-        path="/reset-password/:token"
-        element={
-          <PublicRoute>
-            <ResetPasswordPage />
-          </PublicRoute>
-        }
-      />
+        <Route
+          path="/reset-password/:token"
+          element={
+            <PublicRoute>
+              <ResetPasswordPage />
+            </PublicRoute>
+          }
+        />
 
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
 
-      <Route path="/create-post" element={<CreateLostItemPost />} />
-      <Route path="/post/:id/edit" element={<EditLostItemPost />} />
+        <Route
+          path="/create-post"
+          element={
+            <ProtectedRoute>
+              <CreateLostItemPost />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/post/:id/edit"
+          element={
+            <ProtectedRoute>
+              <EditLostItemPost />
+            </ProtectedRoute>
+          }
+        />
 
-      <Route path="/post/:id" element={<LostItemDetails />} />
+        <Route path="/post/:id" element={<LostItemDetails />} />
 
-      <Route path="/chat" element={<ChatPage />} />
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <ChatPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-disputes"
+          element={
+            <ProtectedRoute>
+              <MyDisputesPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-disputes/:id"
+          element={
+            <ProtectedRoute>
+              <UserDisputeDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <NotificationsPage />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
     </Routes>
   );
 };

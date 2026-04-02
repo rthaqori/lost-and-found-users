@@ -19,7 +19,7 @@ export default function RouteBreadcrumb() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink className="text-foreground pointer-events-none text-lg text-[16px] leading-4 font-medium">
-              Dashboard
+              Feed
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>

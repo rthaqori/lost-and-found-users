@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import { Toaster } from "./components/ui/sonner.tsx";
+import { NotificationProvider } from "./contexts/NotificationContext.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,8 +25,14 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <App />
-          <Toaster richColors />
+          <NotificationProvider
+            pollingInterval={30000}
+            enableSound={true}
+            enableToast={true}
+          >
+            <App />
+            <Toaster richColors />
+          </NotificationProvider>
         </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>
