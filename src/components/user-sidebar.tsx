@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { useNotifications } from "@/contexts/NotificationContext";
+import { Button } from "./ui/button";
 
 const mainNavigation = [
   {
@@ -78,16 +79,6 @@ const accountItems = [
     title: "Profile",
     path: "/profile",
     icon: User,
-  },
-  {
-    title: "Settings",
-    path: "/settings",
-    icon: Settings,
-  },
-  {
-    title: "Help & Support",
-    path: "/support",
-    icon: HelpCircle,
   },
 ];
 
@@ -262,18 +253,27 @@ export default function UserSidebar() {
       <SidebarFooter className="border-t p-3">
         {/* User Info */}
         {user && (
-          <div className="mb-3 flex items-center gap-2 rounded-lg bg-gray-50 p-2 group-data-[collapsible=icon]:justify-center">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-              <span className="text-sm font-medium">
-                {getInitials(user.name || user.email)}
-              </span>
+          <div>
+            <div className="mb-3 flex items-center gap-2 rounded-lg bg-gray-50 p-2 group-data-[collapsible=icon]:justify-center">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                <span className="text-sm font-medium">
+                  {getInitials(user.name || user.email)}
+                </span>
+              </div>
+              <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden">
+                <p className="truncate text-sm font-medium text-gray-900">
+                  {user.name || "User"}
+                </p>
+                <p className="truncate text-xs text-gray-500">{user.email}</p>
+              </div>
             </div>
-            <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden">
-              <p className="truncate text-sm font-medium text-gray-900">
-                {user.name || "User"}
-              </p>
-              <p className="truncate text-xs text-gray-500">{user.email}</p>
-            </div>
+            {user.role === "college_admin" && (
+              <Button asChild size="sm" variant="outline" className="w-full">
+                <Link to="/admin/dashboard" className="font-medium">
+                  Go to Dashboard
+                </Link>
+              </Button>
+            )}
           </div>
         )}
 

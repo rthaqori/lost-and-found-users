@@ -1,4 +1,3 @@
-// src/components/admin/AdminLostItemDetail.tsx
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
@@ -9,6 +8,7 @@ import {
   useDeleteItem,
   usePermanentDeleteItem,
   useResolveFlags,
+  useUpdateItemStatus,
 } from "@/hooks/useLostItems";
 import {
   ShieldCheck,
@@ -36,10 +36,13 @@ import {
   Download,
   MoreHorizontal,
   Archive,
+  Edit,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { StatusUpdateDialog } from "@/components/dialogs/statusUpdateDialog";
+import type { UpdateStatusRequest } from "@/types/lostItem.types";
 
 export function AdminLostItemDetail() {
   const navigate = useNavigate();
@@ -48,6 +51,7 @@ export function AdminLostItemDetail() {
   const [showFlagModal, setShowFlagModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [resolveAction, setResolveAction] = useState<"keep" | "remove">("keep");
+  const [isStatusDialogOpen, setIsStatusDialogOpen] = useState(false);
 
   const { data, isLoading, refetch } = useLostItem(
     id || "",
@@ -57,6 +61,7 @@ export function AdminLostItemDetail() {
   const deleteMutation = useDeleteItem();
   const permanentDeleteMutation = usePermanentDeleteItem();
   const resolveFlagsMutation = useResolveFlags();
+  const updateStatus = useUpdateItemStatus();
 
   const item = data?.data;
 
@@ -72,6 +77,18 @@ export function AdminLostItemDetail() {
     });
     setShowFlagModal(false);
     refetch();
+  };
+
+  const handleStatusUpdate = async (id: string, data: UpdateStatusRequest) => {
+    try {
+      await updateStatus.mutateAsync({
+        id,
+        data: data,
+      });
+      setIsStatusDialogOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (isLoading) {
@@ -130,7 +147,7 @@ export function AdminLostItemDetail() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Header Bar */}
       <div className="border-b border-slate-200 bg-white/80 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/80">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
           <div className="flex h-16 items-center justify-between">
             <button
               onClick={() => navigate("/admin/lost-items")}
@@ -166,6 +183,13 @@ export function AdminLostItemDetail() {
                 <div className="absolute right-0 mt-2 w-48 origin-top-right scale-95 opacity-0 transition-all group-hover:scale-100 group-hover:opacity-100">
                   <div className="rounded-lg border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-800">
                     <button
+                      onClick={() => setIsStatusDialogOpen(true)}
+                      className="flex w-full items-center gap-2 px-4 py-2 text-sm dark:hover:bg-slate-700"
+                    >
+                      <Edit className="h-4 w-4" />
+                      Update Statuse
+                    </button>
+                    <button
                       onClick={() => deleteMutation.mutate(id!)}
                       className="flex w-full items-center gap-2 px-4 py-2 text-sm text-amber-600 hover:bg-slate-50 dark:text-amber-400 dark:hover:bg-slate-700"
                     >
@@ -187,7 +211,7 @@ export function AdminLostItemDetail() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 lg:grid-cols-12">
           {/* Left Column - Media & Description */}
           <div className="lg:col-span-7 xl:col-span-8">
@@ -622,6 +646,14 @@ export function AdminLostItemDetail() {
           </div>
         </div>
       )}
+
+      <StatusUpdateDialog
+        open={isStatusDialogOpen}
+        onOpenChange={setIsStatusDialogOpen}
+        item={item}
+        onConfirm={handleStatusUpdate}
+        isUpdating={updateStatus.isPending}
+      />
     </div>
   );
 }

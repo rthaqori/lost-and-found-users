@@ -25,6 +25,7 @@ import UserDisputeDetailsPage from "./components/pages/UserDisputeDetailsPage";
 import UserLayout from "./components/layouts/userLayout";
 import NotificationsPage from "./components/pages/NotificationsPage";
 import MyItemsPage from "./components/pages/MyItemsPage";
+import RewardHistory from "./components/pages/rewardHistory";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -208,6 +209,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <MyItemsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-rewards"
+          element={
+            <ProtectedRoute>
+              <RewardHistory />
             </ProtectedRoute>
           }
         />
