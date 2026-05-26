@@ -31,7 +31,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { RewardPointsCard } from "../RewardPointsCard";
 import { RewardPointsBadge } from "../RewardPointsBadge";
 
 export function ProfilePage() {

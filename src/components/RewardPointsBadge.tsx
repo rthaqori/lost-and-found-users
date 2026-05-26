@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Award, Coins, Gift, Star, TrendingUp } from "lucide-react";
+import { Award, Coins, Gift, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface RewardPointsBadgeProps {
@@ -40,7 +40,6 @@ const getLevelFromPoints = (points: number): string => {
 export function RewardPointsBadge({
   variant = "default",
   showLevel = true,
-  className,
 }: RewardPointsBadgeProps) {
   const { data: rewardsData, isLoading } = useMyRewards();
   const userRewards = rewardsData?.data;

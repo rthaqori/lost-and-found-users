@@ -53,7 +53,6 @@ export default function NotificationsPage() {
     markAllAsRead,
     deleteNotification,
     deleteAllRead,
-    refetchNotifications,
   } = useNotifications();
 
   // Filter notifications by type

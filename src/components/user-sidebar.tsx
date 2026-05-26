@@ -15,12 +15,11 @@ import {
   Scale,
   PlusCircle,
   User,
-  Settings,
   LogOut,
   Bell,
   MessageCircle,
   Heart,
-  HelpCircle,
+  Ticket,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
@@ -58,6 +57,11 @@ const mainNavigation = [
     title: "My Disputes",
     path: "/my-disputes",
     icon: Scale,
+  },
+  {
+    title: "Coupons",
+    path: "/coupons",
+    icon: Ticket,
   },
 ];
 

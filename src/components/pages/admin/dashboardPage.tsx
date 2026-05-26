@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import {
   useDashboardStats,
   useItemsStats,
@@ -7,7 +6,6 @@ import {
   useZonesStats,
   useDisputesStats,
   useChatsStats,
-  useCollegesStats,
 } from "@/hooks/useStats";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,8 +28,6 @@ import {
   TrendingDown,
   Minus,
   Calendar,
-  Download,
-  Building2,
   CheckCircle,
   Eye,
 } from "lucide-react";
@@ -159,9 +155,7 @@ function ChartCard({ title, children, action }: ChartCardProps) {
 //  MAIN COMPONENT
 
 export default function StatsDashboard() {
-  const { user } = useAuth();
   const [period, setPeriod] = useState<PeriodType>("month");
-  const [selectedCollege, setSelectedCollege] = useState<string>("all");
 
   // Queries
   const { data: dashboardData, isLoading: dashboardLoading } =
