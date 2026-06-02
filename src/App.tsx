@@ -3,7 +3,6 @@ import LoginPage from "./components/pages/loginPage";
 import RegisterPage from "./components/pages/registerPage";
 import { VerifyEmailPage } from "./components/pages/verifyEmailPage";
 import { useAuth } from "./contexts/AuthContext";
-import { Spinner } from "./components/ui/spinner";
 import { ProfilePage } from "./components/pages/profilePage";
 import { ResetPasswordPage } from "./components/pages/resetPasswordPage";
 import Feed from "./components/pages/feedPage";
@@ -28,17 +27,11 @@ import MyItemsPage from "./components/pages/MyItemsPage";
 import RewardHistory from "./components/pages/rewardHistory";
 import CouponsPage from "./components/pages/admin/couponsPage";
 import UserCouponsPage from "./components/pages/UserCouponsPage";
+import { UnauthorizedPage } from "./components/pages/UnauthorizedPage";
+import { NotFoundPage } from "./components/pages/NotFoundPage";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Spinner />
-      </div>
-    );
-  }
+  const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -47,17 +40,19 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function AdminRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, user } = useAuth();
+
+  if (isAuthenticated && user?.role !== "college_admin") {
+    return <Navigate to="/unauthorized-page" replace />;
+  }
+
+  return <>{children}</>;
+}
+
 // Public Route wrapper (redirects if authenticated)
 function PublicRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Spinner />
-      </div>
-    );
-  }
+  const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -73,44 +68,44 @@ const App = () => {
         <Route
           path="/admin/dashboard"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <DashboardPage />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
 
         <Route
           path="/admin/students"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <StudentsPage />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
 
         <Route
           path="/admin/zones"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <ZonesPage />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
         <Route
           path="/admin/zones/:id"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <ZoneDetails />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
 
         <Route
           path="/admin/lost-items"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <LostItemsPage />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
         <Route path="/admin/lost-items/:id" element={<AdminLostItemDetail />} />
@@ -118,25 +113,25 @@ const App = () => {
         <Route
           path="/admin/disputes"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <DisputesPage />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
         <Route
           path="/admin/disputes/:id"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <DisputeDetailsPage />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
         <Route
           path="/admin/coupons"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <CouponsPage />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
       </Route>
@@ -241,6 +236,8 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
 
       <Route
@@ -278,6 +275,8 @@ const App = () => {
           </PublicRoute>
         }
       />
+
+      <Route path="/unauthorized-page" element={<UnauthorizedPage />} />
     </Routes>
   );
 };

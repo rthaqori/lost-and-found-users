@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateUserPayload, UpdateUserPayload } from "@/types/user.types";
 import { userApis } from "@/services/userApis";
 import { toast } from "sonner";
+import { authKeys } from "./useAuth";
 
 // Query Keys
 export const userKeys = {
@@ -116,6 +117,7 @@ export const useUpdateUser = () => {
       toast.success(`User updated successfully!`);
       queryClient.invalidateQueries({ queryKey: userKeys.students() });
       queryClient.invalidateQueries({ queryKey: userKeys.admins() });
+      queryClient.invalidateQueries({ queryKey: authKeys.user() });
       queryClient.invalidateQueries({
         queryKey: userKeys.detail(data.data._id),
       });

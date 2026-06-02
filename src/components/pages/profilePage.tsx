@@ -32,6 +32,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { RewardPointsBadge } from "../RewardPointsBadge";
+import { EditProfileDialog } from "../dialogs/editProfileDialog";
 
 export function ProfilePage() {
   const { user, isLoading, logout } = useAuth();
@@ -133,14 +134,17 @@ export function ProfilePage() {
             </div>
 
             <div className="mt-4 flex gap-2 sm:mt-0">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate("/edit-profile")}
-              >
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
-              </Button>
+              <EditProfileDialog
+                trigger={
+                  <Button variant="outline" size="sm">
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit Profile
+                  </Button>
+                }
+                currentName={user.name}
+                userId={user.id}
+              />
+
               <ChangePasswordDialog />
 
               <AlertDialog>
